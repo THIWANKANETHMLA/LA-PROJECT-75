@@ -75,8 +75,8 @@ public class ManageItemsFormController {
         tblItems.getItems().clear();
         try {
 //          ItemDAO itemDAOImpl = new ItemDAOImpl();
-            itemDAO.loadAllItems() ;
-            ArrayList<ItemDTO> ItemDTOArrayList=itemDAO.loadAllItems();
+            itemDAO.getAll() ;
+            ArrayList<ItemDTO> ItemDTOArrayList=itemDAO.getAll();
             for (ItemDTO itemDTO : ItemDTOArrayList) {
                 tblItems.getItems().add(new ItemTM(
                         itemDTO.getCode(),
@@ -144,7 +144,7 @@ public class ManageItemsFormController {
 //          ItemDAO itemDAOImpl = new ItemDAOImpl();
 
             // Delete Item
-            boolean isDelete = itemDAO.deleteItem(code);
+            boolean isDelete = itemDAO.delete(code);
 
             // Check Delete Item
             if (!isDelete) {
@@ -194,7 +194,7 @@ public class ManageItemsFormController {
                 ItemDTO itemDTO = new ItemDTO(code, description, unitPrice, qtyOnHand);
 
 //              ItemDAO itemDAO = new ItemDAOImpl();
-                itemDAO.saveItem(new ItemDTO(code,description,unitPrice,qtyOnHand));
+                itemDAO.save(new ItemDTO(code,description,unitPrice,qtyOnHand));
                 tblItems.getItems().add(new ItemTM(code, description, unitPrice, qtyOnHand));
 
             } catch (SQLException e) {
@@ -212,7 +212,7 @@ public class ManageItemsFormController {
                 ItemDTO itemDTO = new ItemDTO(code, description, unitPrice, qtyOnHand);
 
 //              ItemDAO itemDAO = new ItemDAOImpl();
-                itemDAO.updateItem(new ItemDTO(code,description,unitPrice,qtyOnHand));
+                itemDAO.update(new ItemDTO(code,description,unitPrice,qtyOnHand));
 
                 ItemTM selectedItem = tblItems.getSelectionModel().getSelectedItem();
                 selectedItem.setDescription(description);
@@ -232,14 +232,14 @@ public class ManageItemsFormController {
 
     private boolean existItem(String code) throws SQLException, ClassNotFoundException {
 //        ItemDAO itemDAO = new ItemDAOImpl();
-        return itemDAO.existsItem(code);
+        return itemDAO.exist(code);
     }
 
 
     private String generateNewId() {
         try {
             ItemDAO itemDAO = new ItemDAOImpl();
-            return itemDAO.generateNewId();
+            return itemDAO.generateNewID();
 
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();

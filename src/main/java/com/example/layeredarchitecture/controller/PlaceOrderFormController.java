@@ -116,7 +116,7 @@ public class PlaceOrderFormController {
                         }
 
                         // Find Customer
-                        CustomerDTO customer = customerDAO.findCustomer(newValue + "");
+                        CustomerDTO customer = customerDAO.find(newValue + "");
 
                         // Set To Customer name lable
                         txtCustomerName.setText(customer.getName());
@@ -146,7 +146,7 @@ public class PlaceOrderFormController {
                     }
 //                    Find Item
                     //ItemDAO itemDAO = new ItemDAOImpl();
-                    ItemDTO item = itemDAO.findItem(newItemCode + "");
+                    ItemDTO item = itemDAO.find(newItemCode + "");
 
                     // Set to Label
                     txtDescription.setText(item.getDescription());
@@ -192,17 +192,17 @@ public class PlaceOrderFormController {
     }
 
     private boolean existItem(String code) throws SQLException, ClassNotFoundException {
-        return itemDAO.existsItem(code);
+        return itemDAO.exist(code);
     }
 
     boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
-        return customerDAO.existCustomer(id);
+        return customerDAO.exist(id);
     }
 
 
     public String generateNewOrderId() {
         try {
-            return orderDAO.generateNewOrderId();
+            return orderDAO.generateNewID();
 
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Failed to generate a new order id").show();
@@ -214,7 +214,7 @@ public class PlaceOrderFormController {
 
     private void loadAllCustomerIds() {
         try {
-            ArrayList<CustomerDTO> customers=customerDAO.getAllCustomers();
+            ArrayList<CustomerDTO> customers=customerDAO.getAll();
             for (CustomerDTO customer : customers) {
                 cmbCustomerId.getItems().add(customer.getId());
             }
@@ -228,7 +228,7 @@ public class PlaceOrderFormController {
 
     private void loadAllItemCodes() {
         try {
-            ArrayList<ItemDTO> itemDTOS=itemDAO.loadAllItems();
+            ArrayList<ItemDTO> itemDTOS=itemDAO.getAll();
             for (ItemDTO item : itemDTOS) {
                 cmbItemCode.getItems().add(item.getCode());
             }
@@ -333,7 +333,7 @@ public class PlaceOrderFormController {
         try {
             connection= DBConnection.getDbConnection().getConnection();
             //OrderDAO orderDAO = new OrderDAOImpl();
-            boolean b1=orderDAO.exitsOrder(orderId);
+            boolean b1=orderDAO.exist(orderId);
             /*if order id already exist*/
             if (b1) {
                 //Alert
@@ -342,7 +342,7 @@ public class PlaceOrderFormController {
             connection.setAutoCommit(false);
 
             //OrderDAO orderDAO = new OrderDAOImpl();
-            boolean b2 = orderDAO.saveOrder(new OrderDTO(orderId,orderDate,customerId));
+            boolean b2 = orderDAO.save(new OrderDTO(orderId,orderDate,customerId));
 
             if (!b2) {
                 connection.rollback();
@@ -351,7 +351,7 @@ public class PlaceOrderFormController {
             }
             for (OrderDetailDTO detail : orderDetails) {
                 //OrderDetailDAO orderDetailDAO = new OrderDetailDAOImpl();
-                boolean b3=orderDetailDAO.saveOrderDetails(detail);
+                boolean b3=orderDetailDAO.save(detail);
 
                 if (!b3) {
                     connection.rollback();
@@ -363,7 +363,7 @@ public class PlaceOrderFormController {
                 item.setQtyOnHand(item.getQtyOnHand() - detail.getQty());
 
                 //ItemDAO itemDAO = new ItemDAOImpl();
-                boolean b4=itemDAO.updateItem(new ItemDTO(item.getCode(),item.getDescription(),item.getUnitPrice(),item.getQtyOnHand()));
+                boolean b4=itemDAO.update(new ItemDTO(item.getCode(),item.getDescription(),item.getUnitPrice(),item.getQtyOnHand()));
 
                 if (!b4) {
                     connection.rollback();
@@ -389,7 +389,7 @@ public class PlaceOrderFormController {
         try {
 
             //ItemDAO itemDAO = new ItemDAOImpl();
-            ItemDTO itemDTO=itemDAO.findItem(code);
+            ItemDTO itemDTO=itemDAO.find(code);
             return new ItemDTO(code, itemDTO.getDescription(), itemDTO.getUnitPrice(), itemDTO.getQtyOnHand());
         } catch (SQLException e) {
             throw new RuntimeException("Failed to find the Item " + code, e);

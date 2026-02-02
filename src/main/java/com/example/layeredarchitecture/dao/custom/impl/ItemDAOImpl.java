@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ItemDAOImpl implements ItemDAO {
 
     @Override
-    public ArrayList<ItemDTO> loadAllItems() throws SQLException, ClassNotFoundException {
+    public ArrayList<ItemDTO> getAll() throws SQLException, ClassNotFoundException {
         ResultSet rst = CRUDUtil.execute("SELECT * FROM Item");
         ArrayList<ItemDTO> items = new ArrayList<>();
         while (rst.next()) {
@@ -27,29 +27,29 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
     @Override
-    public boolean saveItem(ItemDTO itemDTO) throws SQLException, ClassNotFoundException {
+    public boolean save(ItemDTO itemDTO) throws SQLException, ClassNotFoundException {
         return CRUDUtil.execute("INSERT INTO Item (code, description, unitPrice, qtyOnHand) VALUES (?,?,?,?)", itemDTO.getCode(), itemDTO.getDescription(), itemDTO.getUnitPrice(), itemDTO.getQtyOnHand());
     }
 
     @Override
-    public boolean updateItem(ItemDTO itemDTO) throws SQLException, ClassNotFoundException {
+    public boolean update(ItemDTO itemDTO) throws SQLException, ClassNotFoundException {
 
         return CRUDUtil.execute("UPDATE Item SET description=?, unitPrice=?, qtyOnHand=? WHERE code=?", itemDTO.getDescription(), itemDTO.getUnitPrice(), itemDTO.getQtyOnHand(), itemDTO.getCode());
     }
 
     @Override
-    public boolean deleteItem(String code) throws SQLException, ClassNotFoundException {
+    public boolean delete(String code) throws SQLException, ClassNotFoundException {
         return CRUDUtil.execute("DELETE FROM Item WHERE code=?",code);
     }
 
     @Override
-    public boolean existsItem(String itemCode) throws SQLException, ClassNotFoundException {
+    public boolean exist(String itemCode) throws SQLException, ClassNotFoundException {
         ResultSet rs = CRUDUtil.execute("SELECT code FROM Item WHERE code=?", itemCode);
         return rs.next();
     }
 
     @Override
-    public String generateNewId() throws SQLException, ClassNotFoundException {
+    public String generateNewID() throws SQLException, ClassNotFoundException {
         ResultSet rst = CRUDUtil.execute("SELECT code FROM Item ORDER BY code DESC LIMIT 1;");
         if (rst.next()) {
             String id = rst.getString("code");
@@ -61,7 +61,7 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
     @Override
-    public ItemDTO findItem(String itemCode) throws SQLException, ClassNotFoundException {
+    public ItemDTO find(String itemCode) throws SQLException, ClassNotFoundException {
         ResultSet rst = CRUDUtil.execute("SELECT * FROM Item WHERE code=?", itemCode);
 
         if (rst.next()) {

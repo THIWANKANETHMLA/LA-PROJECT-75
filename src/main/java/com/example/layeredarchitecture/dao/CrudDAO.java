@@ -5,12 +5,12 @@ import com.example.layeredarchitecture.model.CustomerDTO;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public interface CrudDAO {
-    public ArrayList<CustomerDTO> getAll() throws SQLException, ClassNotFoundException;
+public interface CrudDAO<T> {
+    public ArrayList<T> getAll() throws SQLException, ClassNotFoundException;
 
-    public boolean save(CustomerDTO customerDTO) throws SQLException, ClassNotFoundException ;
+    public boolean save(T DTO) throws SQLException, ClassNotFoundException ;
 
-    public boolean update(CustomerDTO customerDTO) throws SQLException, ClassNotFoundException ;
+    public boolean update(T DTO) throws SQLException, ClassNotFoundException ;
 
     public boolean delete(String id) throws SQLException, ClassNotFoundException ;
 
@@ -18,5 +18,5 @@ public interface CrudDAO {
 
     public boolean exist(String id) throws SQLException, ClassNotFoundException;
 
-    public CustomerDTO find(String id) throws SQLException, ClassNotFoundException;
+    public T find(String id) throws SQLException, ClassNotFoundException;
 }
