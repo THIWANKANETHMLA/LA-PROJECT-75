@@ -4,6 +4,7 @@ import com.example.layeredarchitecture.bo.custom.*;
 import com.example.layeredarchitecture.bo.custom.impl.CustomerBOImpl;
 import com.example.layeredarchitecture.bo.custom.impl.ItemBOImpl;
 import com.example.layeredarchitecture.bo.custom.impl.PlaceOrderBoImpl;
+import com.example.layeredarchitecture.dao.BOFactory;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.CustomerDTO;
 import com.example.layeredarchitecture.model.ItemDTO;
@@ -56,9 +57,9 @@ public class PlaceOrderFormController {
     private String orderId;
 
     //Property Injection
-    CustomerBO customerBO = new CustomerBOImpl();
-    ItemBO itemBO = new ItemBOImpl();
-    placeOrderBO orderBO = new PlaceOrderBoImpl();
+    CustomerBO customerBO = (CustomerBO) BOFactory.getInstance().getBO(BOFactory.BOType.CUSTOMER);;
+    ItemBO itemBO = (ItemBO) BOFactory.getInstance().getBO(BOFactory.BOType.ITEM);
+    placeOrderBO orderBO = (placeOrderBO) BOFactory.getInstance().getBO(BOFactory.BOType.PLACE_ORDER);
     //OrderDetailDAO orderDetailDAO = new OrderDetailDAOImpl();
 
 
