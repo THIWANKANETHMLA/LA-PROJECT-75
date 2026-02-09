@@ -2,10 +2,10 @@ package com.example.layeredarchitecture.dao.custom.impl;
 
 import com.example.layeredarchitecture.dao.CRUDUtil;
 import com.example.layeredarchitecture.dao.custom.OrderDAO;
-import com.example.layeredarchitecture.model.OrderDTO;
+import com.example.layeredarchitecture.dto.OrderDTO;
+import com.example.layeredarchitecture.entity.Order;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class OrderDAOImpl implements OrderDAO {
@@ -25,22 +25,22 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public OrderDTO find(String id) throws SQLException, ClassNotFoundException {
+    public Order find(String id) throws SQLException, ClassNotFoundException {
         return null;
     }
 
     @Override
-    public ArrayList<OrderDTO> getAll() throws SQLException, ClassNotFoundException {
+    public ArrayList<Order> getAll() throws SQLException, ClassNotFoundException {
         return null;
     }
 
     @Override
-    public boolean save(OrderDTO orderDTO) throws SQLException, ClassNotFoundException {
+    public boolean save(Order orderDTO) throws SQLException, ClassNotFoundException {
         return CRUDUtil.execute("INSERT INTO `Orders` (oid, date, customerID) VALUES (?,?,?)",orderDTO.getOrderId(),orderDTO.getOrderDate(),orderDTO.getCustomerId());
     }
 
     @Override
-    public boolean update(OrderDTO DTO) throws SQLException, ClassNotFoundException {
+    public boolean update(Order DTO) throws SQLException, ClassNotFoundException {
         return false;
     }
 

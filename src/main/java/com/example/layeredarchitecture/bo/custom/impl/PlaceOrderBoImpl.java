@@ -6,14 +6,14 @@ import com.example.layeredarchitecture.dao.custom.CustomerDAO;
 import com.example.layeredarchitecture.dao.custom.ItemDAO;
 import com.example.layeredarchitecture.dao.custom.OrderDAO;
 import com.example.layeredarchitecture.dao.custom.OrderDetailDAO;
-import com.example.layeredarchitecture.dao.custom.impl.CustomerDAOImpl;
-import com.example.layeredarchitecture.dao.custom.impl.ItemDAOImpl;
-import com.example.layeredarchitecture.dao.custom.impl.OrderDAOImpl;
-import com.example.layeredarchitecture.dao.custom.impl.OrderDetailDAOImpl;
-import com.example.layeredarchitecture.model.CustomerDTO;
-import com.example.layeredarchitecture.model.ItemDTO;
-import com.example.layeredarchitecture.model.OrderDTO;
-import com.example.layeredarchitecture.model.OrderDetailDTO;
+import com.example.layeredarchitecture.dto.CustomerDTO;
+import com.example.layeredarchitecture.dto.ItemDTO;
+import com.example.layeredarchitecture.dto.OrderDTO;
+import com.example.layeredarchitecture.dto.OrderDetailDTO;
+import com.example.layeredarchitecture.entity.Customer;
+import com.example.layeredarchitecture.entity.Item;
+import com.example.layeredarchitecture.entity.Order;
+import com.example.layeredarchitecture.entity.OrderDetail;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -37,7 +37,8 @@ public class PlaceOrderBoImpl implements placeOrderBO {
 
     @Override
     public CustomerDTO findCustomer(String id) throws SQLException, ClassNotFoundException {
-        return customerDAO.find(id);
+        Customer customer= customerDAO.find(id);
+        return new CustomerDTO(customer.getId(),customer.getName(),customer.getAddress());
     }
 
     @Override
@@ -47,7 +48,8 @@ public class PlaceOrderBoImpl implements placeOrderBO {
 
     @Override
     public ItemDTO findItem(String id) throws SQLException, ClassNotFoundException {
-        return itemDAO.find(id);
+        Item item = itemDAO.find(id);
+        return new ItemDTO(item.getCode(),item.getDescription(),item.getUnitPrice(),item.getQtyOnHand());
     }
 
     @Override
@@ -57,22 +59,32 @@ public class PlaceOrderBoImpl implements placeOrderBO {
 
     @Override
     public boolean saveOrder(OrderDTO orderDTO) throws SQLException, ClassNotFoundException {
-        return orderDAO.save(orderDTO);
+        return orderDAO.save(new Order(orderDTO.getOrderId(),orderDTO.getOrderDate(),orderDTO.getCustomerId(),orderDTO.getCustomerName(),orderDTO.getOrderTotal()));
     }
 
     @Override
     public boolean saveOrderDetail(OrderDetailDTO orderDetailDTO) throws SQLException, ClassNotFoundException {
-        return orderDetailDAO.save(orderDetailDTO);
+        return orderDetailDAO.save(new OrderDetail(orderDetailDTO.getOrderId(),orderDetailDTO.getItemCode(),orderDetailDTO.getQty(),orderDetailDTO.getUnitPrice()));
     }
 
     @Override
     public ArrayList<CustomerDTO> getAllCustomers() throws SQLException, ClassNotFoundException {
-        return customerDAO.getAll();
+        ArrayList<Customer> customers = customerDAO.getAll();
+        ArrayList<CustomerDTO> customerDTO = new ArrayList<>();
+        for (Customer customer : customers) {
+            customerDTO.add(new CustomerDTO(customer.getId(), customer.getName(), customer.getAddress()));
+        }
+        return customerDTO;
     }
 
     @Override
     public ArrayList<ItemDTO> getAllItems() throws SQLException, ClassNotFoundException {
-        return itemDAO.getAll();
+        ArrayList<Item> items = itemDAO.getAll();
+        ArrayList<ItemDTO> itemDTO = new ArrayList<>();
+        for (Item item : items) {
+            itemDTO.add(new ItemDTO(item.getCode(),item.getDescription(),item.getUnitPrice(),item.getQtyOnHand()));
+        }
+        return itemDTO;
     }
 
 }
