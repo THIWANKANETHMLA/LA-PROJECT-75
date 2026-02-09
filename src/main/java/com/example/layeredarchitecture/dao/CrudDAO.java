@@ -2,10 +2,11 @@ package com.example.layeredarchitecture.dao;
 
 import com.example.layeredarchitecture.model.CustomerDTO;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public interface CrudDAO<T> {
+public interface CrudDAO<T>  extends SuperDAO{
     public ArrayList<T> getAll() throws SQLException, ClassNotFoundException;
 
     public boolean save(T DTO) throws SQLException, ClassNotFoundException ;
