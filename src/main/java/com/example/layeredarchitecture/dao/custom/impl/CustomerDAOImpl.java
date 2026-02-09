@@ -1,6 +1,5 @@
 package com.example.layeredarchitecture.dao.custom.impl;
 
-
 import com.example.layeredarchitecture.dao.CRUDUtil;
 import com.example.layeredarchitecture.dao.custom.CustomerDAO;
 import com.example.layeredarchitecture.model.CustomerDTO;
